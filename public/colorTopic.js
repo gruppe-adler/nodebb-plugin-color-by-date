@@ -1,6 +1,6 @@
 (function colorTopic() {
     var titleToTimestamp = function (title) {
-        var matches = title.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
+        var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
             return 0;
         }
@@ -16,37 +16,22 @@
 
     var refresh = function () {
         var now = parseInt((new Date()).getTime() / 1000, 10);
-        var topicRows = document.querySelectorAll('.category-item .topic-row');
-        Array.prototype.forEach.call(topicRows, function (topicRow) {
-            var meta = topicRow.querySelector('meta[itemprop="name"]');
-            var topicTime = titleToTimestamp(meta.getAttribute('content'));
+        var topicRows = document.querySelectorAll('.category-item');
+        Array.prototype.forEach.call(topicRows, function (categoryItem) {
+            var meta = categoryItem.querySelector('meta[itemprop="name"], .topic-title');
+            var topicTime = titleToTimestamp(meta.getAttribute('content') || meta.textContent || '');
+            var dataRelativeTime = '';
+            var timeDiff = now - topicTime;
 
             if (topicTime === 0) {
-                return;
+                dataRelativeTime = 'now';
+            } else if (timeDiff < 86400) {
+                dataRelativeTime = 'future';
+            } else if (timeDiff > 86400) {
+                dataRelativeTime = 'past'
             }
 
-            var color = timediffToColor(Math.abs(now - topicTime));
-
-            var rgba;
-            var r = 255;
-            var g = 255;
-            var b = 255;
-            var a = 1;
-
-            if (now - topicTime > 0) {
-                g -= color;
-                b -= color;
-            } else {
-                r -= color;
-                g -= color;
-            }
-
-
-            rgba = [r, g, b, a].join(', ');
-
-            console.log(rgba);
-            console.log(topicRow);
-            topicRow.style.backgroundColor = 'rgba(' + rgba + ')';
+            categoryItem.setAttribute('data-relative-time', dataRelativeTime);
         });
     };
 
