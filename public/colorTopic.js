@@ -11,7 +11,7 @@
 
     var timediffToColor = function (timediff) {
         var ceilingedDiff = Math.min(timediff, maxColorShiftTimediff);
-        return parseInt((ceilingedDiff / maxColorShiftTimediff) * 255, 10);
+        return parseInt((ceilingedDiff / maxColorShiftTimediff) * 55, 10);
     };
 
     var refresh = function () {
@@ -26,13 +26,23 @@
             }
 
             var color = timediffToColor(Math.abs(now - topicTime));
-            var rgba = '0, 0, 0, 0';
+
+            var rgba;
+            var r = 255;
+            var g = 255;
+            var b = 255;
+            var a = 1;
 
             if (now - topicTime > 0) {
-                rgba = color + ', 0, 0, 0.2';
+                g -= color;
+                b -= color;
             } else {
-                rgba = '0, 0, ' + color + ', 0.2';
+                r -= color;
+                g -= color;
             }
+
+
+            rgba = [r, g, b, a].join(', ');
 
             console.log(rgba);
             console.log(topicRow);
