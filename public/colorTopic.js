@@ -1,6 +1,6 @@
 (function colorTopic() {
     var titleToTimestamp = function (title) {
-        var matches = title.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})\s/);
+        var matches = title.match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
             return 0;
         }
@@ -20,6 +20,10 @@
         Array.prototype.forEach.call(topicRows, function (topicRow) {
             var meta = topicRow.querySelector('meta[itemprop="name"]');
             var topicTime = titleToTimestamp(meta.getAttribute('content'));
+
+            if (topicTime === 0) {
+                return;
+            }
 
             var color = timediffToColor(Math.abs(now - topicTime));
             var rgba = '0, 0, 0, 0';
