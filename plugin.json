@@ -9,7 +9,7 @@
     ],
     "hooks": [
         {
-            "hook": "filter:category.get",
+            "hook": "filter:category.topics.get",
             "method": "colorTopic",
             "callbacked": true
         }

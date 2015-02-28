@@ -1,7 +1,10 @@
 {
   "name": "nodebb-plugin-color-by-date",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "dependencies": {
     "underscore": "~1.8.2"
+  },
+  "nbbpm": {
+    "compatibility": "^0.6.1"
   }
 }

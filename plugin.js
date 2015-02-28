@@ -9,13 +9,14 @@ var
     });
 
 module.exports.colorTopic = function (data, cb) {
+
     var now = parseInt((new Date()).getTime() / 1000, 10);
 
-    data.category.topics.forEach(function (topic) {
+    data.topics.forEach(function (topic) {
         topic.referencetime = titleToTimestamp(topic.title) || now;
     });
 
-    data.category.topics = data.category.topics.sort(function (a, b) {
+    data.topics = data.topics.sort(function (a, b) {
         if (b.pinned && !a.pinned) {
             return 1;
         } else if (!b.pinned && a.pinned) {
