@@ -1,4 +1,46 @@
+/*global $ */
 (function colorTopic() {
+
+    /**
+     * taken from underscoreJs
+     */
+    var _ = {
+        now: Date.now || function() {
+            return new Date().getTime();
+        },
+        debounce: function(func, wait, immediate) {
+            var timeout, args, context, timestamp, result;
+
+            var later = function() {
+                var last = _.now() - timestamp;
+
+                if (last < wait && last >= 0) {
+                    timeout = setTimeout(later, wait - last);
+                } else {
+                    timeout = null;
+                    if (!immediate) {
+                        result = func.apply(context, args);
+                        if (!timeout) context = args = null;
+                    }
+                }
+            };
+
+            return function() {
+                context = this;
+                args = arguments;
+                timestamp = _.now();
+                var callNow = immediate && !timeout;
+                if (!timeout) timeout = setTimeout(later, wait);
+                if (callNow) {
+                    result = func.apply(context, args);
+                    context = args = null;
+                }
+
+                return result;
+            };
+        }
+    };
+
     var titleToTimestamp = function (title) {
         var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
@@ -7,14 +49,7 @@
         return parseInt((new Date(matches[1])).getTime() / 1000, 10);
     };
 
-    var maxColorShiftTimediff = 86400 * 14;
-
-    var timediffToColor = function (timediff) {
-        var ceilingedDiff = Math.min(timediff, maxColorShiftTimediff);
-        return parseInt((ceilingedDiff / maxColorShiftTimediff) * 55, 10);
-    };
-
-    var refresh = function () {
+    var refresh = _.debounce(function () {
         var now = parseInt((new Date()).getTime() / 1000, 10);
         var topicRows = document.querySelectorAll('.category-item');
         Array.prototype.forEach.call(topicRows, function (categoryItem) {
@@ -33,11 +68,9 @@
 
             categoryItem.setAttribute('data-relative-time', dataRelativeTime);
         });
-    };
-
-    document.addEventListener('DOMContentLoaded', function () {
-        refresh();
-    });
+    }, 300);
 
     $(window).bind('action:ajaxify.contentLoaded', refresh);
+    $(window).bind('action:topics.loaded', refresh);
+    $(window).bind('action:categories.loaded', refresh);
 }());
