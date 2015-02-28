@@ -36,18 +36,8 @@
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-        console.log('DOMContentLoaded');
         refresh();
     });
 
-    window.setInterval((function () {
-        var lastUrl = document.location.href;
-        return function () {
-            var newUrl = document.location.href;
-            if (newUrl !== lastUrl) {
-                lastUrl = newUrl;
-                refresh();
-            }
-        };
-    }()), 1000);
+    $(window).bind('action:ajaxify.contentLoaded', refresh);
 }());
