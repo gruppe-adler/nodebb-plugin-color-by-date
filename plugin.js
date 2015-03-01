@@ -13,9 +13,8 @@ module.exports.colorTopic = function (data, cb) {
     var now = parseInt((new Date()).getTime() / 1000, 10);
 
     data.topics.forEach(function (topic) {
-        topic.referencetime = titleToTimestamp(topic.title) || now;
+        topic.referencetime = titleToTimestamp(topic.title) || topic.lastposttime;
     });
-
     data.topics = data.topics.sort(function (a, b) {
         if (b.pinned && !a.pinned) {
             return 1;
