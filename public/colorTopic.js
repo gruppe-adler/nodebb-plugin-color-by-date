@@ -41,7 +41,7 @@
         }
     };
 
-    var titleToTimestamp = function (title) {
+    :var titleToTimestamp = function (title) {
         var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
             return 0;
@@ -51,9 +51,9 @@
 
     var refresh = _.debounce(function () {
         var now = parseInt((new Date()).getTime() / 1000, 10);
-        var topicRows = document.querySelectorAll('.category-item');
+        var topicRows = document.querySelectorAll('[component="category/topic"]');
         Array.prototype.forEach.call(topicRows, function (categoryItem) {
-            var meta = categoryItem.querySelector('meta[itemprop="name"], .topic-title');
+            var meta = categoryItem.querySelector('[component="topic/header"] a'); 
             var topicTime = titleToTimestamp(meta.getAttribute('content') || meta.textContent || '');
             var dataRelativeTime = '';
             var timeDiff = now - topicTime;
