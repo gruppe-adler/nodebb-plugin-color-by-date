@@ -41,7 +41,7 @@
         }
     };
 
-    :var titleToTimestamp = function (title) {
+    var titleToTimestamp = function (title) {
         var matches = title.trim().match(/([0-9]{4}-[0-9]{2}-[0-9]{2})([^0-9a-z])/i);
         if (!matches) {
             return 0;
