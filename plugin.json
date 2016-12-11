@@ -1,7 +1,7 @@
 {
     "id": "nodebb-plugin-color-by-date",
     "name": "NodeBB Color By Date",
-    "description": "NodeBB Plugin plugin to color threads by date (date taken from thread title",
+    "description": "Sort threads by date in title; add DOM classes for future/past dates",
     "url": "https://github.com/gruppe-adler/nodebb-plugin-color-by-date",
     "library": "./plugin.js",
     "scripts": [
